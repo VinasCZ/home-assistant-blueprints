@@ -40,21 +40,14 @@ blueprint:
           domain: event
 
     brightness_button_press_entity:
-      name: "Light 1: Button Press Entity"
-      description: "The event entity for button press actions (toggles light)"
-      selector:
-        entity:
-          domain: event
-
-    colour_button_press_entity:
-      name: "Light 2: Button Press Entity"
+      name: "Brightness: Button Press Entity"
       description: "The event entity for button press actions (toggles light)"
       selector:
         entity:
           domain: event
 
     temperature_button_press_entity:
-      name: "Light 3: Button Press Entity"
+      name: "Temperature: Button Press Entity"
       description: "The event entity for button press actions (toggles light)"
       selector:
         entity:
@@ -131,6 +124,7 @@ blueprint:
     brightness_min:
       name: "Brightness: Minimum"
       description: "Minimum brightness to prevent lights from turning off (percentage)"
+      default: 5
       selector:
         number:
           min: 1
@@ -140,6 +134,7 @@ blueprint:
     brightness_max:
       name: "Brightness: Maximum"
       description: "Maximum brightness (percentage)"
+      default: 100
       selector:
         number:
           min: 50
