@@ -15,18 +15,6 @@ blueprint:
         entity:
           domain: event
 
-    colour_scroll_right_entity:
-      name: "Colour: Scroll Right Entity"
-      selector:
-        entity:
-          domain: event
-
-    colour_scroll_left_entity:
-      name: "Colour: Scroll Left Entity"
-      selector:
-        entity:
-          domain: event
-
     temperature_scroll_right_entity:
       name: "Temperature: Scroll Right Entity"
       selector:
@@ -329,22 +317,22 @@ action:
         sequence:
           - service: light.turn_on
             target:
-              entity_id: "{{ light_3_target_light }}"
+              entity_id: "{{ target_light }}"
             data:
               transition: "{{ transition }}"
-              brightness_pct: >-
-                {% set current = state_attr(light_3_target_light, 'brightness') %}
+              color_temp_kelvin: >-
+                {% set current_temp = state_attr(target_light, 'color_temp_kelvin') %}
+                
                 {% if current is none %}
-                {% set current_pct = 50 %}
-                {% else %}
-                {% set current_pct = (current / 255 * 100) | round(0) %}
+                  {% set current_temp = temperature_min %}
                 {% endif %}
-                {% if light_3_scroll_direction == 'increase' %}
-                {% set new_pct = current_pct - (light_3_decrease_step * press_count) %}
+                
+                {% if temperature_scroll_direction == 'increase' %}
+                  {% set new_temp = current_temp - (temperature_increase_step * press_count) %}
                 {% else %}
-                {% set new_pct = current_pct + (light_3_increase_step * press_count) %}
+                  {% set new_temp = current_temp + (temperature_decrease_step * press_count) %}
                 {% endif %}
-                {{ [[new_pct, light_3_min_brightness] | max, light_3_max_brightness] | min }}
+                {{ [[new_pct, temperature_min] | max, temperature_max] | min }}
 
 
 mode: !input automation_mode
