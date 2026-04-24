@@ -85,26 +85,6 @@ blueprint:
           max: 50
           unit_of_measurement: "%"
 
-    #    colour_increase_step:
-    #      name: "Colour: Increase Step"
-    #      description: "How much to step up through colour spectrum (RGB)"
-    #      default: 10
-    #      selector:
-    #        number:
-    #          min: 1
-    #          max: 50
-    #          unit_of_measurement: "%"
-    #
-    #    colour_decrease_step:
-    #      name: "Colour: Decrease Step"
-    #      description: "How much to step down through colour spectrum"
-    #      default: 10
-    #      selector:
-    #        number:
-    #          min: 1
-    #          max: 50
-    #          unit_of_measurement: "%"
-
     temperature_increase_step:
       name: "Temperature: Increase Step"
       description: "How much to increase white balance (percentage)"
@@ -136,18 +116,6 @@ blueprint:
             - label: "Decrease Brightness"
               value: "decrease"
 
-    #    colour_scroll_right_action:
-    #      name: "Light 2: Scroll Right Action"
-    #      description: "What happens when scrolling right for colour spectrum"
-    #      default: "increase"
-    #      selector:
-    #        select:
-    #          options:
-    #            - label: "Step up colour"
-    #              value: "increase"
-    #            - label: "Step down colour"
-    #              value: "decrease"
-
     temperature_scroll_right_action:
       name: "Temperature: Scroll Right Action"
       description: "What happens when scrolling right for white balance"
@@ -178,24 +146,6 @@ blueprint:
           max: 100
           unit_of_measurement: "%"
 
-    #    colour_min:
-    #      name: "Colour: Minimum"
-    #      description: "Minimum colour"
-    #      selector:
-    #        number:
-    #          min: 0
-    #          max: 765
-    #          unit_of_measurement: "RGB (255 * 3)"
-
-    #    colour_max:
-    #      name: "Colour: Maximum"
-    #      description: "Maximum colour"
-    #      selector:
-    #        number:
-    #          min: 0
-    #          max: 765
-    #          unit_of_measurement: "RGB (255 * 3)"
-
     temperature_min:
       name: "Temperature: Minimum"
       description: "Minimum white balance"
@@ -208,7 +158,7 @@ blueprint:
 
     temperature_max:
       name: "Temperature: Maximum"
-      description: "Maximum white balance (percentage)"
+      description: "Maximum white balance"
       default: 10000
       selector:
         number:
@@ -265,15 +215,6 @@ trigger:
   - platform: state
     entity_id: !input brightness_button_press_entity
     id: brightness_button_press
-  #  - platform: state
-  #    entity_id: !input colour_scroll_right_entity
-  #    id: colour_scroll_right
-  #  - platform: state
-  #    entity_id: !input colour_scroll_left_entity
-  #    id: colour_scroll_left
-  #  - platform: state
-  #    entity_id: !input colour_button_press_entity
-  #    id: colour_button_press
   - platform: state
     entity_id: !input temperature_scroll_right_entity
     id: temperature_scroll_right
@@ -294,12 +235,6 @@ action:
       brightness_scroll_direction: !input brightness_scroll_right_action
       brightness_min: !input brightness_min
       brightness_max: !input brightness_max
-
-      #      colour_increase_step: !input colour_increase_step
-      #      colour_decrease_step: !input colour_decrease_step
-      #      colour_scroll_direction: !input colour_scroll_right_action
-      #      colour_min: !input colour_min
-      #      colour_max: !input colour_max
 
       temperature_increase_step: !input temperature_increase_step
       temperature_decrease_step: !input temperature_decrease_step
@@ -415,31 +350,6 @@ action:
                 {% set new_pct = current_pct + (light_3_increase_step * press_count) %}
                 {% endif %}
                 {{ [[new_pct, light_3_min_brightness] | max, light_3_max_brightness] | min }}
-
-
-#      - conditions:
-#          - condition: trigger
-#            id: light_2_scroll_left
-#        sequence:
-#          - service: light.turn_on
-#            target:
-#              entity_id: "{{ light_2_target_light }}"
-#            data:
-#              transition: "{{ transition }}"
-#              brightness_pct: >-
-#                {% set current = state_attr(light_2_target_light, 'brightness') %}
-#                {% if current is none %}
-#                {% set current_pct = 50 %}
-#                {% else %}
-#                {% set current_pct = (current / 255 * 100) | round(0) %}
-#                {% endif %}
-#                {% if light_2_scroll_direction == 'increase' %}
-#                {% set new_pct = current_pct - (light_2_decrease_step * press_count) %}
-#                {% else %}
-#                {% set new_pct = current_pct + (light_2_increase_step * press_count) %}
-#                {% endif %}
-#                {{ [[new_pct, light_2_min_brightness] | max, light_2_max_brightness] | min }}
-#
 
 
 mode: !input automation_mode
