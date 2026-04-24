@@ -296,7 +296,7 @@ action:
                 {% else %}
                   {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
-                {% if light_1_scroll_direction == 'increase' %}
+                {% if brightness_scroll_direction == 'increase' %}
                   {% set new_pct = current_pct - (brightness_decrease_step * press_count) %}
                 {% else %}
                   {% set new_pct = current_pct + (brightness_increase_step * press_count) %}
