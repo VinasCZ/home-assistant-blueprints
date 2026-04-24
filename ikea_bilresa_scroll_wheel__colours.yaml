@@ -196,7 +196,7 @@ blueprint:
     #          max: 765
     #          unit_of_measurement: "RGB (255 * 3)"
 
-    temperature_min_brightness:
+    temperature_min:
       name: "Temperature: Minimum"
       description: "Minimum white balance"
       default: 0
