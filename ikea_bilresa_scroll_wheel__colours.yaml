@@ -308,7 +308,7 @@ action:
           - condition: trigger
             id: temperature_scroll_right
         sequence:
-          - service: light.turn_on
+          - service: light.set_temperature
             target:
               entity_id: "{{ target_light }}"
             data:
@@ -331,7 +331,7 @@ action:
           - condition: trigger
             id: temperature_scroll_left
         sequence:
-          - service: light.turn_on
+          - service: light.set_temperature
             target:
               entity_id: "{{ target_light }}"
             data:
