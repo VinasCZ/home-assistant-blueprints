@@ -162,7 +162,7 @@ blueprint:
           unit_of_measurement: "s"
 
     on_off_transition_time:
-      name: "Effect Transition Time"
+      name: "On/off Transition Time"
       description: "How long the light takes to transition between turning lights on and off (seconds). Lower = more responsive, higher = smoother."
       default: 1
       selector:
