@@ -325,7 +325,7 @@ action:
                 {% else %}
                   {% set new_temp = current_temp - (temperature_decrease_step * press_count) %}
                 {% endif %}
-                {{ [[new_pct, temperature_min] | max, temperature_max] | min }}
+                {{ [[new_temp, temperature_min] | max, temperature_max] | min }}
 
       - conditions:
           - condition: trigger
@@ -348,7 +348,7 @@ action:
                 {% else %}
                   {% set new_temp = current_temp + (temperature_decrease_step * press_count) %}
                 {% endif %}
-                {{ [[new_pct, temperature_min] | max, temperature_max] | min }}
+                {{ [[new_temp, temperature_min] | max, temperature_max] | min }}
 
 
 mode: !input automation_mode
