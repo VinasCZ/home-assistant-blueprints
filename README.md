@@ -29,3 +29,15 @@ https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_
 | **Light 1/2/3: Maximum**                  | Maximum brightness                   | 100%    |
 | **Transition Time**                       | Smoothing between values             | 0.2s    |
 | **Automation Mode**                       | How to handle rapid scrolling        | restart |
+
+## IKEA Bilresa Scroll Wheel - brightness / colour / temperature
+
+#### Installation
+
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fvinascz%2Fhome-assistant-blueprints%2Fmaster%2Fikea_bilresa_scroll_wheel__colours.yaml)
+
+Or manually import:
+
+```
+https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_bilresa_scroll_wheel__colours.yaml
+```

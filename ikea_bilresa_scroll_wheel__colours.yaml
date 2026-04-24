@@ -1,0 +1,511 @@
+blueprint:
+  name: "IKEA Bilresa Scroll Wheel - brightness / colour / white balance"
+  description: "Control a light using the IKEA Bilresa scroll wheel. Different modes control brightness / colour / white balance of a single light/light group."
+  domain: automation
+  input:
+    light_1_scroll_right_entity:
+      name: "Light 1: Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    light_2_scroll_right_entity:
+      name: "Light 2: Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    light_3_scroll_right_entity:
+      name: "Light 3: Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    light_1_scroll_left_entity:
+      name: "Light 1: Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    light_2_scroll_left_entity:
+      name: "Light 2: Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    light_3_scroll_left_entity:
+      name: "Light 3: Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    light_1_button_press_entity:
+      name: "Light 1: Button Press Entity"
+      description: "The event entity for button press actions (toggles light)"
+      selector:
+        entity:
+          domain: event
+
+    light_2_button_press_entity:
+      name: "Light 2: Button Press Entity"
+      description: "The event entity for button press actions (toggles light)"
+      selector:
+        entity:
+          domain: event
+
+    light_3_button_press_entity:
+      name: "Light 3: Button Press Entity"
+      description: "The event entity for button press actions (toggles light)"
+      selector:
+        entity:
+          domain: event
+
+    light_target:
+      name: "Target Light"
+      description: "The light to control"
+      selector:
+        entity:
+          domain: light
+
+    light_1_increase_step:
+      name: "Light 1: Increase Step"
+      description: "How much to increase brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_2_increase_step:
+      name: "Light 2: Increase Step"
+      description: "How much to step up through colour spectrum"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_3_increase_step:
+      name: "Light 3: Increase Step"
+      description: "How much to increase white balance (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_1_decrease_step:
+      name: "Light 1: Decrease Step"
+      description: "How much to decrease brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_2_decrease_step:
+      name: "Light 2: Decrease Step"
+      description: "How much to step down through colour spectrum"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_3_decrease_step:
+      name: "Light 3: Decrease Step"
+      description: "How much to decrease white balance (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_1_scroll_right_action:
+      name: "Light 1: Scroll Right Action"
+      description: "What happens when scrolling right for brightness"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Increase Brightness"
+              value: "increase"
+            - label: "Decrease Brightness"
+              value: "decrease"
+
+
+    light_2_scroll_right_action:
+      name: "Light 2: Scroll Right Action"
+      description: "What happens when scrolling right for colour spectrum"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Step up colour"
+              value: "increase"
+            - label: "Step down colour"
+              value: "decrease"
+
+    light_3_scroll_right_action:
+      name: "Light 3: Scroll Right Action"
+      description: "What happens when scrolling right for white balance"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Increase white balance"
+              value: "increase"
+            - label: "Decrease white balance"
+              value: "decrease"
+
+    light_1_min_brightness:
+      name: "Brightness: Minimum"
+      description: "Minimum brightness to prevent lights from turning off (percentage)"
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_2_min_colour:
+      name: "Colour: Minimum"
+      description: "Minimum colour"
+      selector:
+        number:
+          min: 0
+          max: 765
+          unit_of_measurement: "RGB (255 * 3)"
+
+    light_3_min_brightness:
+      name: "White balance: Minimum"
+      description: "Minimum white balance"
+      selector:
+        number:
+          min: 0
+          max: 10000
+          unit_of_measurement: "K"
+
+    light_1_max_brightness:
+      name: "Brightness: Maximum"
+      description: "Maximum brightness (percentage)"
+      selector:
+        number:
+          min: 50
+          max: 100
+          unit_of_measurement: "%"
+
+    light_2_max_brightness:
+      name: "Colour: Maximum"
+      description: "Maximum colour"
+      selector:
+        number:
+          min: 0
+          max: 765
+          unit_of_measurement: "RGB (255 * 3)"
+
+    light_3_max_brightness:
+      name: "White balance: Maximum"
+      description: "Maximum white balance (percentage)"
+      selector:
+        number:
+          min: 0
+          max: 10000
+          unit_of_measurement: "%"
+
+    # Smoothing settings
+    transition_time:
+      name: "Transition Time"
+      description: "How long the light takes to transition between values (seconds). Lower = more responsive, higher = smoother."
+      default: 0.2
+      selector:
+        number:
+          min: 0
+          max: 2
+          step: 0.1
+          unit_of_measurement: "s"
+
+    # Common settings
+    automation_mode:
+      name: "Automation Mode"
+      description: "How to handle multiple triggers"
+      default: "restart"
+      selector:
+        select:
+          options:
+            - label: "Restart (recommended - interrupts previous action for instant response)"
+              value: "restart"
+            - label: "Queued (queue all scroll actions - can feel laggy)"
+              value: "queued"
+            - label: "Single (ignore new triggers while running)"
+              value: "single"
+            - label: "Parallel (run multiple instances simultaneously)"
+              value: "parallel"
+
+    max_queue:
+      name: "Maximum Queue Size"
+      description: "Maximum number of queued scroll actions (only applies in queued mode)"
+      default: 20
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: "actions"
+
+trigger:
+  - platform: state
+    entity_id: !input light_1_scroll_right_entity
+    id: light_1_scroll_right
+  - platform: state
+    entity_id: !input light_1_scroll_left_entity
+    id: light_1_scroll_left
+  - platform: state
+    entity_id: !input light_1_button_press_entity
+    id: light_1_button_press
+  - platform: state
+    entity_id: !input light_2_scroll_right_entity
+    id: light_2_scroll_right
+  - platform: state
+    entity_id: !input light_2_scroll_left_entity
+    id: light_2_scroll_left
+  - platform: state
+    entity_id: !input light_2_button_press_entity
+    id: light_2_button_press
+  - platform: state
+    entity_id: !input light_3_scroll_right_entity
+    id: light_3_scroll_right
+  - platform: state
+    entity_id: !input light_3_scroll_left_entity
+    id: light_3_scroll_left
+  - platform: state
+    entity_id: !input light_3_button_press_entity
+    id: light_3_button_press
+
+
+action:
+  - variables:
+      target_light: !input light_target
+
+      light_1_increase_step: !input light_1_increase_step
+      light_2_increase_step: !input light_2_increase_step
+      light_3_increase_step: !input light_3_increase_step
+
+      light_1_decrease_step: !input light_1_decrease_step
+      light_2_decrease_step: !input light_2_decrease_step
+      light_3_decrease_step: !input light_3_decrease_step
+
+      light_1_scroll_direction: !input light_1_scroll_right_action
+      light_2_scroll_direction: !input light_2_scroll_right_action
+      light_3_scroll_direction: !input light_3_scroll_right_action
+
+      light_1_min_brightness: !input light_1_min_brightness
+      light_2_min_brightness: !input light_2_min_brightness
+      light_3_min_brightness: !input light_3_min_brightness
+
+      light_1_max_brightness: !input light_1_max_brightness
+      light_2_max_brightness: !input light_2_max_brightness
+      light_3_max_brightness: !input light_3_max_brightness
+
+      # Smoothing
+      transition: !input transition_time
+      # Multiplier from scroll speed (multi_press count)
+      press_count: "{{ trigger.to_state.attributes.totalNumberOfPressesCounted | int(1) }}"
+
+  - choose:
+      # Toggle lights via button press
+      - conditions:
+          - condition: trigger
+            id: light_1_button_press
+        sequence:
+          - service: light.toggle
+            target:
+              entity_id: "{{ target_light }}"
+
+      #      - conditions:
+      #          - condition: trigger
+      #            id: light_2_button_press
+      #        sequence:
+      #          - service: light.toggle
+      #            target:
+      #              entity_id: "{{ light_2_target_light }}"
+
+      #      - conditions:
+      #          - condition: trigger
+      #            id: light_3_button_press
+      #        sequence:
+      #          - service: light.toggle
+      #            target:
+      #              entity_id: "{{ light_3_target_light }}"
+
+      # Scroll right actions
+      - conditions:
+          - condition: trigger
+            id: light_1_scroll_right
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: "{{ target_light }}"
+            data:
+              transition: "{{ transition }}"
+              brightness_pct: >-
+                {% set current = state_attr(target_light, 'brightness') %}
+                {% if current is none %}
+                  {% set current_pct = 50 %}
+                {% else %}
+                  {% set current_pct = (current / 255 * 100) | round(0) %}
+                {% endif %}
+                {% if light_1_scroll_direction == 'increase' %}
+                  {% set new_pct = current_pct + (light_1_increase_step * press_count) %}
+                {% else %}
+                  {% set new_pct = current_pct - (light_1_decrease_step * press_count) %}
+                {% endif %}
+                {{ [[new_pct, light_1_min_brightness] | max, light_1_max_brightness] | min }}
+
+      - conditions:
+          - condition: trigger
+            id: light_2_scroll_right
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: "{{ target_light }}"
+            data:
+              transition: "{{ transition }}"
+              rgb_colour: >-
+                {% set current = state_attr(target_light, 'rgb_colour') %}
+                
+                {% if current is none %}
+                  {% set current_rgb = 0 %}
+                {% else %}
+                  {% set current_rgb = current[0] + current[1] + current[2] %}
+                {% endif %}
+                
+                {% if light_2_scroll_direction == 'increase' %}
+                  {% set new_rgb = current_rgb + (light_2_increase_step * press_count) %}
+                {% else %}
+                  {% set new_rgb = current_rgb - (light_2_decrease_step * press_count) %}
+                {% endif %}
+                
+                {% if new_rgb < 255 %}
+                  {% set red = new_rgb %}
+                  {% set green = 0 %}
+                  {% set blue = 0 %}
+                {% elif new_rgb < 255 * 2 %}
+                  {% set red = 255 %}
+                  {% set green = new_rgb - 255 %}
+                  {% set blue = 0 %}
+                {% else %}
+                  {% set red = 255 %}
+                  {% set green = 255 %}
+                  {% set blue = new_rgb - 255 * 2 %}
+                {% endif %}
+                
+                {{ (red, green, blue) }}
+      
+
+      #      - conditions:
+      #          - condition: trigger
+      #            id: light_3_scroll_right
+      #        sequence:
+      #          - service: light.turn_on
+      #            target:
+      #              entity_id: "{{ light_3_target_light }}"
+      #            data:
+      #              transition: "{{ transition }}"
+      #              brightness_pct: >-
+      #                {% set current = state_attr(light_3_target_light, 'brightness') %}
+      #                {% if current is none %}
+      #                  {% set current_pct = 50 %}
+      #                {% else %}
+      #                  {% set current_pct = (current / 255 * 100) | round(0) %}
+      #                {% endif %}
+      #                {% if light_3_scroll_direction == 'increase' %}
+      #                  {% set new_pct = current_pct + (light_3_increase_step * press_count) %}
+      #                {% else %}
+      #                  {% set new_pct = current_pct - (light_3_decrease_step * press_count) %}
+      #                {% endif %}
+      #                {{ [[new_pct, light_3_min_brightness] | max, light_3_max_brightness] | min }}
+
+      # Scroll left actions
+      - conditions:
+          - condition: trigger
+            id: light_1_scroll_left
+        sequence:
+          - service: light.turn_on
+            target:
+              entity_id: "{{ light_1_target_light }}"
+            data:
+              transition: "{{ transition }}"
+              brightness_pct: >-
+                {% set current = state_attr(light_1_target_light, 'brightness') %}
+                {% if current is none %}
+                {% set current_pct = 50 %}
+                {% else %}
+                {% set current_pct = (current / 255 * 100) | round(0) %}
+                {% endif %}
+                {% if light_1_scroll_direction == 'increase' %}
+                {% set new_pct = current_pct - (light_1_decrease_step * press_count) %}
+                {% else %}
+                {% set new_pct = current_pct + (light_1_increase_step * press_count) %}
+                {% endif %}
+                {{ [[new_pct, light_1_min_brightness] | max, light_1_max_brightness] | min }}
+
+#      - conditions:
+#          - condition: trigger
+#            id: light_2_scroll_left
+#        sequence:
+#          - service: light.turn_on
+#            target:
+#              entity_id: "{{ light_2_target_light }}"
+#            data:
+#              transition: "{{ transition }}"
+#              brightness_pct: >-
+#                {% set current = state_attr(light_2_target_light, 'brightness') %}
+#                {% if current is none %}
+#                {% set current_pct = 50 %}
+#                {% else %}
+#                {% set current_pct = (current / 255 * 100) | round(0) %}
+#                {% endif %}
+#                {% if light_2_scroll_direction == 'increase' %}
+#                {% set new_pct = current_pct - (light_2_decrease_step * press_count) %}
+#                {% else %}
+#                {% set new_pct = current_pct + (light_2_increase_step * press_count) %}
+#                {% endif %}
+#                {{ [[new_pct, light_2_min_brightness] | max, light_2_max_brightness] | min }}
+#
+#      - conditions:
+#          - condition: trigger
+#            id: light_3_scroll_left
+#        sequence:
+#          - service: light.turn_on
+#            target:
+#              entity_id: "{{ light_3_target_light }}"
+#            data:
+#              transition: "{{ transition }}"
+#              brightness_pct: >-
+#                {% set current = state_attr(light_3_target_light, 'brightness') %}
+#                {% if current is none %}
+#                {% set current_pct = 50 %}
+#                {% else %}
+#                {% set current_pct = (current / 255 * 100) | round(0) %}
+#                {% endif %}
+#                {% if light_3_scroll_direction == 'increase' %}
+#                {% set new_pct = current_pct - (light_3_decrease_step * press_count) %}
+#                {% else %}
+#                {% set new_pct = current_pct + (light_3_increase_step * press_count) %}
+#                {% endif %}
+#                {{ [[new_pct, light_3_min_brightness] | max, light_3_max_brightness] | min }}
+
+
+mode: !input automation_mode
+max: !input max_queue
