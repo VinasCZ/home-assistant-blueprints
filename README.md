@@ -6,6 +6,8 @@ Adapted from https://github.com/corentinnormand/ha-blueprints/blob/main/ikea_bil
 
 Control brightness of up to 3 different lights / groups of lights.
 The scroll-wheel must be set up in Matter mode to properly work with the three different modes.
+Contains a helper to fix an issue when the device becomes offline and comes back online - all events actually get fired
+regardless of whether a button was pushed, so we wait for 10s after the device is back online for it to be usable again.
 
 #### Installation
 

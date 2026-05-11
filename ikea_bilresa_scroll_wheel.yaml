@@ -386,9 +386,8 @@ action:
               entity_id: "{{ device_online_helper }}"
 
   # Halt execution if the device is offline — prevents light triggers from firing on reconnect
-  - condition: state
-    entity_id: "{{ device_online_helper }}"
-    state: "on"
+  - condition: template
+    value_template: "{{ is_state(device_online_helper, 'on') }}"
 
   - choose:
       # Toggle lights via button press
