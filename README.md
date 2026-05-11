@@ -29,10 +29,30 @@ https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_
 | **Light 1/2/3: Increase/Decrease Step**   | Brightness change per scroll (%)                                                                                                | 1%      |
 | **Light 1/2/3: Minimum**                  | Minimum brightness; 0% allows fully turning off via scroll                                                                      | 0%      |
 | **Light 1/2/3: Maximum**                  | Maximum brightness                                                                                                              | 100%    |
-| **Battery Type Sensor**                   | Sensor reporting device battery type; used to detect offline/online state                                                       | -       |
-| **Device Online Helper**                  | `input_boolean` that gates light actions. Name it after the device (e.g. "Office Lightswitch Online") to quasi-assign it in HA. | -       |
+| **Device Online Helper**                  | `input_boolean` managed by a separate automation to gate light actions when the device is offline                               | -       |
 | **Transition Time**                       | Smoothing between values                                                                                                        | 0.2s    |
 | **Automation Mode**                       | How to handle rapid scrolling                                                                                                   | restart |
+
+## IKEA Bilresa - Device Online Helper
+
+Manages an `input_boolean` that tracks whether the device is online. Use this alongside the 3 light control blueprint to prevent spurious triggers when the device reconnects.
+
+#### Installation
+
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fvinascz%2Fhome-assistant-blueprints%2Fmaster%2Fikea_bilresa_device_online_helper.yaml)
+
+Or manually import:
+
+```
+https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_bilresa_device_online_helper.yaml
+```
+
+#### Configuration
+
+| Parameter                  | Description                                                                         | Default |
+|----------------------------|-------------------------------------------------------------------------------------|---------|
+| **Battery Type Sensor**    | Sensor reporting the device battery type; goes unavailable when the device is offline | -       |
+| **Device Online Helper**   | The `input_boolean` to manage                                                       | -       |
 
 ## IKEA Bilresa Scroll Wheel - brightness / colour / temperature
 

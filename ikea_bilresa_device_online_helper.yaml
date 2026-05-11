@@ -1,0 +1,52 @@
+blueprint:
+  name: "IKEA Bilresa - Device Online Helper"
+  description: "Manages an input_boolean that tracks whether an IKEA Bilresa device is online. Set the helper to on when the device comes back online (battery type reports 'AAA' for 10 seconds), and off when it goes offline (battery type becomes unavailable). Use alongside the Bilresa light control blueprint to prevent spurious triggers on reconnect."
+  domain: automation
+  input:
+    battery_type_sensor:
+      name: "Battery Type Sensor"
+      description: "Sensor reporting the device battery type. Goes unavailable when the device is offline."
+      selector:
+        entity:
+          domain: sensor
+
+    device_online_helper:
+      name: "Device Online Helper"
+      description: "The input_boolean to manage. Create one in Settings > Devices & Services > Helpers."
+      selector:
+        entity:
+          domain: input_boolean
+
+trigger:
+  - platform: state
+    entity_id: !input battery_type_sensor
+    to: "unavailable"
+    id: device_offline
+  - platform: state
+    entity_id: !input battery_type_sensor
+    to: "AAA"
+    for:
+      seconds: 10
+    id: device_online
+
+action:
+  - variables:
+      device_online_helper: !input device_online_helper
+
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: device_offline
+        sequence:
+          - service: input_boolean.turn_off
+            target:
+              entity_id: "{{ device_online_helper }}"
+      - conditions:
+          - condition: trigger
+            id: device_online
+        sequence:
+          - service: input_boolean.turn_on
+            target:
+              entity_id: "{{ device_online_helper }}"
+
+mode: single
