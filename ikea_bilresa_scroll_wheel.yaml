@@ -34,7 +34,7 @@ blueprint:
     light_1_increase_step:
       name: "Light 1: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -44,7 +44,7 @@ blueprint:
     light_1_decrease_step:
       name: "Light 1: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -114,7 +114,7 @@ blueprint:
     light_2_increase_step:
       name: "Light 2: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -124,7 +124,7 @@ blueprint:
     light_2_decrease_step:
       name: "Light 2: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -194,7 +194,7 @@ blueprint:
     light_3_increase_step:
       name: "Light 3: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -204,7 +204,7 @@ blueprint:
     light_3_decrease_step:
       name: "Light 3: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 1
+      default: 5
       selector:
         number:
           min: 1
@@ -395,7 +395,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_1_target_light, 'brightness') %}
                 {% if current is none %}
-                  {% set current_pct = 50 %}
+                  {% set current_pct = light_1_min_brightness %}
                 {% else %}
                   {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
@@ -418,7 +418,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_2_target_light, 'brightness') %}
                 {% if current is none %}
-                  {% set current_pct = 50 %}
+                  {% set current_pct = light_2_min_brightness %}
                 {% else %}
                   {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
@@ -441,7 +441,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_3_target_light, 'brightness') %}
                 {% if current is none %}
-                  {% set current_pct = 50 %}
+                  {% set current_pct = light_3_min_brightness %}
                 {% else %}
                   {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
@@ -465,7 +465,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_1_target_light, 'brightness') %}
                 {% if current is none %}
-                {% set current_pct = 50 %}
+                {% set current_pct = light_1_min_brightness %}
                 {% else %}
                 {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
@@ -488,7 +488,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_2_target_light, 'brightness') %}
                 {% if current is none %}
-                {% set current_pct = 50 %}
+                {% set current_pct = light_2_min_brightness %}
                 {% else %}
                 {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
@@ -511,7 +511,7 @@ action:
               brightness_pct: >-
                 {% set current = state_attr(light_3_target_light, 'brightness') %}
                 {% if current is none %}
-                {% set current_pct = 50 %}
+                {% set current_pct = light_3_min_brightness %}
                 {% else %}
                 {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}

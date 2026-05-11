@@ -26,7 +26,7 @@ https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_
 | **Light 1/2/3: Scroll Right/Left Entity** | Event entities for brightness scroll                                                                                            | -       |
 | **Light 1/2/3: Button Press Entity**      | Event entity for brightness toggle                                                                                              | -       |
 | **Light 1/2/3: Target Light**             | Light to control                                                                                                                | -       |
-| **Light 1/2/3: Increase/Decrease Step**   | Brightness change per scroll (%)                                                                                                | 1%      |
+| **Light 1/2/3: Increase/Decrease Step**   | Brightness change per scroll (%)                                                                                                | 5%      |
 | **Light 1/2/3: Minimum**                  | Minimum brightness; 0% allows fully turning off via scroll                                                                      | 0%      |
 | **Light 1/2/3: Maximum**                  | Maximum brightness                                                                                                              | 100%    |
 | **Device Online Helper**                  | `input_boolean` managed by a separate automation to gate light actions when the device is offline                               | -       |
