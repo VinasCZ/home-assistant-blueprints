@@ -10,36 +10,8 @@ blueprint:
         entity:
           domain: event
 
-    light_2_scroll_right_entity:
-      name: "Light 2: Scroll Right Entity"
-      description: "The event entity for scroll right actions"
-      selector:
-        entity:
-          domain: event
-
-    light_3_scroll_right_entity:
-      name: "Light 3: Scroll Right Entity"
-      description: "The event entity for scroll right actions"
-      selector:
-        entity:
-          domain: event
-
     light_1_scroll_left_entity:
       name: "Light 1: Scroll Left Entity"
-      description: "The event entity for scroll left actions"
-      selector:
-        entity:
-          domain: event
-
-    light_2_scroll_left_entity:
-      name: "Light 2: Scroll Left Entity"
-      description: "The event entity for scroll left actions"
-      selector:
-        entity:
-          domain: event
-
-    light_3_scroll_left_entity:
-      name: "Light 3: Scroll Left Entity"
       description: "The event entity for scroll left actions"
       selector:
         entity:
@@ -52,36 +24,8 @@ blueprint:
         entity:
           domain: event
 
-    light_2_button_press_entity:
-      name: "Light 2: Button Press Entity"
-      description: "The event entity for button press actions (toggles light)"
-      selector:
-        entity:
-          domain: event
-
-    light_3_button_press_entity:
-      name: "Light 3: Button Press Entity"
-      description: "The event entity for button press actions (toggles light)"
-      selector:
-        entity:
-          domain: event
-
     light_1_target:
       name: "Light 1: Target Light"
-      description: "The light to control"
-      selector:
-        entity:
-          domain: light
-
-    light_2_target:
-      name: "Light 2: Target Light"
-      description: "The light to control"
-      selector:
-        entity:
-          domain: light
-
-    light_3_target:
-      name: "Light 3: Target Light"
       description: "The light to control"
       selector:
         entity:
@@ -97,48 +41,8 @@ blueprint:
           max: 50
           unit_of_measurement: "%"
 
-    light_2_increase_step:
-      name: "Light 2: Increase Step"
-      description: "How much to increase brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
-    light_3_increase_step:
-      name: "Light 3: Increase Step"
-      description: "How much to increase brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
     light_1_decrease_step:
       name: "Light 1: Decrease Step"
-      description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
-    light_2_decrease_step:
-      name: "Light 2: Decrease Step"
-      description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
-    light_3_decrease_step:
-      name: "Light 3: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
       default: 10
       selector:
@@ -159,53 +63,8 @@ blueprint:
             - label: "Decrease Brightness"
               value: "decrease"
 
-
-    light_2_scroll_right_action:
-      name: "Light 2: Scroll Right Action"
-      description: "What happens when scrolling right for brightness"
-      default: "increase"
-      selector:
-        select:
-          options:
-            - label: "Increase Brightness"
-              value: "increase"
-            - label: "Decrease Brightness"
-              value: "decrease"
-
-    light_3_scroll_right_action:
-      name: "Light 3: Scroll Right Action"
-      description: "What happens when scrolling right for brightness"
-      default: "increase"
-      selector:
-        select:
-          options:
-            - label: "Increase Brightness"
-              value: "increase"
-            - label: "Decrease Brightness"
-              value: "decrease"
-
     light_1_min_brightness:
       name: "Light 1: Minimum"
-      description: "Minimum brightness to prevent lights from turning off (percentage)"
-      default: 5
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
-    light_2_min_brightness:
-      name: "Light 2: Minimum"
-      description: "Minimum brightness to prevent lights from turning off (percentage)"
-      default: 5
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
-
-    light_3_min_brightness:
-      name: "Light 3: Minimum"
       description: "Minimum brightness to prevent lights from turning off (percentage)"
       default: 5
       selector:
@@ -224,6 +83,76 @@ blueprint:
           max: 100
           unit_of_measurement: "%"
 
+    light_2_scroll_right_entity:
+      name: "Light 2: Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    light_2_scroll_left_entity:
+      name: "Light 2: Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    light_2_button_press_entity:
+      name: "Light 2: Button Press Entity"
+      description: "The event entity for button press actions (toggles light)"
+      selector:
+        entity:
+          domain: event
+
+    light_2_target:
+      name: "Light 2: Target Light"
+      description: "The light to control"
+      selector:
+        entity:
+          domain: light
+
+    light_2_increase_step:
+      name: "Light 2: Increase Step"
+      description: "How much to increase brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_2_decrease_step:
+      name: "Light 2: Decrease Step"
+      description: "How much to decrease brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_2_scroll_right_action:
+      name: "Light 2: Scroll Right Action"
+      description: "What happens when scrolling right for brightness"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Increase Brightness"
+              value: "increase"
+            - label: "Decrease Brightness"
+              value: "decrease"
+
+    light_2_min_brightness:
+      name: "Light 2: Minimum"
+      description: "Minimum brightness to prevent lights from turning off (percentage)"
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
     light_2_max_brightness:
       name: "Light 2: Maximum"
       description: "Maximum brightness (percentage)"
@@ -232,6 +161,76 @@ blueprint:
         number:
           min: 50
           max: 100
+          unit_of_measurement: "%"
+
+    light_3_scroll_right_entity:
+      name: "Light 3: Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    light_3_scroll_left_entity:
+      name: "Light 3: Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    light_3_button_press_entity:
+      name: "Light 3: Button Press Entity"
+      description: "The event entity for button press actions (toggles light)"
+      selector:
+        entity:
+          domain: event
+
+    light_3_target:
+      name: "Light 3: Target Light"
+      description: "The light to control"
+      selector:
+        entity:
+          domain: light
+
+    light_3_increase_step:
+      name: "Light 3: Increase Step"
+      description: "How much to increase brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_3_decrease_step:
+      name: "Light 3: Decrease Step"
+      description: "How much to decrease brightness per scroll (percentage)"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    light_3_scroll_right_action:
+      name: "Light 3: Scroll Right Action"
+      description: "What happens when scrolling right for brightness"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Increase Brightness"
+              value: "increase"
+            - label: "Decrease Brightness"
+              value: "decrease"
+
+    light_3_min_brightness:
+      name: "Light 3: Minimum"
+      description: "Minimum brightness to prevent lights from turning off (percentage)"
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 50
           unit_of_measurement: "%"
 
     light_3_max_brightness:
