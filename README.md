@@ -31,7 +31,6 @@ https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_
 | **Minimum Brightness**    | Minimum brightness for all lights; 0% allows fully turning off via scroll                                   | 0%       |
 | **Maximum Brightness**    | Maximum brightness for all lights                                                                           | 100%     |
 | **Transition Time**       | Smoothing between values                                                                                    | 0.2s     |
-| **Automation Mode**       | How to handle rapid scrolling                                                                               | restart  |
 
 ## IKEA Bilresa Scroll Wheel - 3 lights (Full config)
 
