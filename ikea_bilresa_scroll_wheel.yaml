@@ -34,7 +34,7 @@ blueprint:
     light_1_increase_step:
       name: "Light 1: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -44,7 +44,7 @@ blueprint:
     light_1_decrease_step:
       name: "Light 1: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -65,11 +65,11 @@ blueprint:
 
     light_1_min_brightness:
       name: "Light 1: Minimum"
-      description: "Minimum brightness to prevent lights from turning off (percentage)"
-      default: 5
+      description: "Minimum brightness (percentage)"
+      default: 0
       selector:
         number:
-          min: 1
+          min: 0
           max: 50
           unit_of_measurement: "%"
 
@@ -114,7 +114,7 @@ blueprint:
     light_2_increase_step:
       name: "Light 2: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -124,7 +124,7 @@ blueprint:
     light_2_decrease_step:
       name: "Light 2: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -145,11 +145,11 @@ blueprint:
 
     light_2_min_brightness:
       name: "Light 2: Minimum"
-      description: "Minimum brightness to prevent lights from turning off (percentage)"
-      default: 5
+      description: "Minimum brightness (percentage)"
+      default: 0
       selector:
         number:
-          min: 1
+          min: 0
           max: 50
           unit_of_measurement: "%"
 
@@ -194,7 +194,7 @@ blueprint:
     light_3_increase_step:
       name: "Light 3: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -204,7 +204,7 @@ blueprint:
     light_3_decrease_step:
       name: "Light 3: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
+      default: 1
       selector:
         number:
           min: 1
@@ -225,11 +225,11 @@ blueprint:
 
     light_3_min_brightness:
       name: "Light 3: Minimum"
-      description: "Minimum brightness to prevent lights from turning off (percentage)"
-      default: 5
+      description: "Minimum brightness (percentage)"
+      default: 0
       selector:
         number:
-          min: 1
+          min: 0
           max: 50
           unit_of_measurement: "%"
 
@@ -242,6 +242,20 @@ blueprint:
           min: 50
           max: 100
           unit_of_measurement: "%"
+
+    battery_type_sensor:
+      name: "Battery Type Sensor"
+      description: "Sensor reporting the device battery type. Used to detect when the device goes offline (unavailable) or comes back online (AAA)."
+      selector:
+        entity:
+          domain: sensor
+
+    device_online_helper:
+      name: "Device Online Helper"
+      description: "An input_boolean that tracks whether the device is considered online. Create one in Settings > Devices & Services > Helpers. Naming it after the device (e.g. 'Office Lightswitch Online') quasi-assigns it to that device in HA."
+      selector:
+        entity:
+          domain: input_boolean
 
     # Smoothing settings
     transition_time:
@@ -310,6 +324,16 @@ trigger:
   - platform: state
     entity_id: !input light_3_button_press_entity
     id: light_3_button_press
+  - platform: state
+    entity_id: !input battery_type_sensor
+    to: "unavailable"
+    id: device_offline
+  - platform: state
+    entity_id: !input battery_type_sensor
+    to: "AAA"
+    for:
+      seconds: 10
+    id: device_online
 
 
 action:
@@ -342,6 +366,29 @@ action:
       transition: !input transition_time
       # Multiplier from scroll speed (multi_press count)
       press_count: "{{ trigger.to_state.attributes.totalNumberOfPressesCounted | int(1) }}"
+
+      device_online_helper: !input device_online_helper
+
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: device_offline
+        sequence:
+          - service: input_boolean.turn_off
+            target:
+              entity_id: "{{ device_online_helper }}"
+      - conditions:
+          - condition: trigger
+            id: device_online
+        sequence:
+          - service: input_boolean.turn_on
+            target:
+              entity_id: "{{ device_online_helper }}"
+
+  # Halt execution if the device is offline — prevents light triggers from firing on reconnect
+  - condition: state
+    entity_id: "{{ device_online_helper }}"
+    state: "on"
 
   - choose:
       # Toggle lights via button press
