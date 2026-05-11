@@ -1,5 +1,5 @@
 blueprint:
-  name: "IKEA Bilresa Scroll Wheel - 3 lights"
+  name: "IKEA Bilresa Scroll Wheel - 3 lights (Full config)"
   description: "Control a light using the IKEA Bilresa scroll wheel. Each mode can control brightness of a separate light/light group."
   domain: automation
   input:
