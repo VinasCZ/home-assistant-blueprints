@@ -186,7 +186,7 @@ action:
             id: dial_brightness
         sequence:
           - variables:
-              step_mode: "{{ trigger.event.data.params.step_mode }}"
+              step_mode: "{{ trigger.event.data.params.step_mode | int }}"
               ticks: "{{ (trigger.event.data.params.step_size / 8) | int }}"
               brightness_change: "{{ step * ticks }}"
           - service: light.turn_on
