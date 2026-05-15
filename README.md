@@ -71,7 +71,7 @@ Controls a light using the Philips Hue Tap Dial Switch via ZHA.
 - **Dial** — controls brightness of the target light
 - **Button 1** — turns the light on/off; resets any counters back to zero when turned off
 - **Button 2** — short/long press set a counter to 1 or 2; pressing again resets to 0
-- **Button 3** — short press / hold increments a counter; resets to 0 when maximum is reached
+- **Button 3** — short press / hold increments a counter (resets to 0 at maximum); long press decrements (wraps to maximum at 0)
 - **Button 4** — short/long press each trigger a separate `input_button` helper
 
 #### Installation
