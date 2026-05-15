@@ -1,0 +1,294 @@
+blueprint:
+  name: "Philips Hue Tap Dial Switch - control lights and bind helpers"
+  description: >
+    Control lights using the Philips Hue Tap Dial Switch.
+
+    - Dial: controls brightness of the target light.
+    - Button 1: turns the light on/off. Resets any counters back to zero when turned off.
+    - Button 2: short/long press set a counter to 1 or 2; pressing again resets to 0.
+    - Button 3: short press / hold increments a counter; resets to 0 when maximum is reached.
+    - Button 4: short/long press each trigger a separate input_button helper.
+  domain: automation
+  input:
+    device_id:
+      name: "Hue Tap Dial Switch"
+      description: "The Philips Hue Tap Dial Switch device."
+      selector:
+        device:
+
+    light_target:
+      name: "Target Light"
+      description: "The light to control."
+      selector:
+        entity:
+          domain: light
+
+    min_brightness:
+      name: "Minimum Brightness"
+      description: "Minimum brightness (0% allows fully turning off via dial)."
+      default: 0
+      selector:
+        number:
+          min: 0
+          max: 50
+          unit_of_measurement: "%"
+
+    max_brightness:
+      name: "Maximum Brightness"
+      description: "Maximum brightness."
+      default: 100
+      selector:
+        number:
+          min: 50
+          max: 100
+          unit_of_measurement: "%"
+
+    turn_on_brightness:
+      name: "Turn On Brightness"
+      description: "Brightness to use when turning the light on via button press."
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: "%"
+
+    step:
+      name: "Step Size"
+      description: "Brightness change per dial tick (%). The dial reports step_size in multiples of 8; this value is multiplied by the number of ticks."
+      default: 1
+      selector:
+        number:
+          min: 1
+          max: 20
+          unit_of_measurement: "%"
+
+    transition_time:
+      name: "Dial Transition Time"
+      description: "How long the light takes to transition between brightness values when using the dial (seconds)."
+      default: 0.1
+      selector:
+        number:
+          min: 0
+          max: 2
+          step: 0.1
+          unit_of_measurement: "s"
+
+    on_off_transition_time:
+      name: "Turn On/Off Transition Time"
+      description: "How long the light takes to transition when turning on or off via button press (seconds)."
+      default: 0.5
+      selector:
+        number:
+          min: 0
+          max: 5
+          step: 0.1
+          unit_of_measurement: "s"
+
+    button_2_scene_helper:
+      name: "Button 2 Scene Helper"
+      description: "counter tracking which button 2 scene is active: 0 = none, 1 = short press, 2 = long press. Set maximum to 2. Create one in Settings > Devices & Services > Helpers."
+      selector:
+        entity:
+          domain: counter
+
+    button_3_scene_helper:
+      name: "Button 3 Scene Helper"
+      description: "counter tracking which button 3 scene is active. Set the maximum to the number of scenes. Create one in Settings > Devices & Services > Helpers."
+      selector:
+        entity:
+          domain: counter
+
+    button_4_helper:
+      name: "Button 4 Short Press Helper"
+      description: "input_button pressed by button 4 short press. Create one in Settings > Devices & Services > Helpers."
+      selector:
+        entity:
+          domain: input_button
+
+    button_4_long_helper:
+      name: "Button 4 Long Press Helper"
+      description: "input_button pressed by button 4 long press. Create one in Settings > Devices & Services > Helpers."
+      selector:
+        entity:
+          domain: input_button
+
+trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: step_with_on_off
+    id: dial_brightness
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_1_short_release
+    id: button_1_toggle
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_2_short_release
+    id: button_2_short
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_2_long_release
+    id: button_2_long
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_3_short_release
+    id: button_3_short
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      args:
+        press_type: hold
+      command: button_3_hold
+    id: button_3_hold
+
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_4_short_release
+    id: button_4_short
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input device_id
+      command: button_4_long_release
+    id: button_4_long
+
+action:
+  - variables:
+      light_target: !input light_target
+      min_brightness: !input min_brightness
+      max_brightness: !input max_brightness
+      turn_on_brightness: !input turn_on_brightness
+      step: !input step
+      transition: !input transition_time
+      on_off_transition: !input on_off_transition_time
+      button_2_scene_helper: !input button_2_scene_helper
+      button_3_scene_helper: !input button_3_scene_helper
+      button_4_helper: !input button_4_helper
+      button_4_long_helper: !input button_4_long_helper
+
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: dial_brightness
+        sequence:
+          - variables:
+              step_mode: "{{ trigger.event.data.params.step_mode }}"
+              ticks: "{{ (trigger.event.data.params.step_size / 8) | int }}"
+              brightness_change: "{{ step * ticks }}"
+          - service: light.turn_on
+            target:
+              entity_id: "{{ light_target }}"
+            data:
+              transition: "{{ transition }}"
+              brightness_pct: >-
+                {% set current = state_attr(light_target, 'brightness') %}
+                {% if current is none %}
+                  {% set current_pct = min_brightness %}
+                {% else %}
+                  {% set current_pct = (current / 255 * 100) | round(0) %}
+                {% endif %}
+                {% if step_mode == 0 %}
+                  {% set new_pct = current_pct + brightness_change %}
+                {% else %}
+                  {% set new_pct = current_pct - brightness_change %}
+                {% endif %}
+                {{ [[new_pct, min_brightness] | max, max_brightness] | min }}
+
+      - conditions:
+          - condition: trigger
+            id: button_1_toggle
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: state
+                    entity_id: !input light_target
+                    state: "off"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ light_target }}"
+                    data:
+                      brightness_pct: "{{ turn_on_brightness }}"
+                      transition: "{{ on_off_transition }}"
+            default:
+              - service: light.turn_off
+                target:
+                  entity_id: "{{ light_target }}"
+                data:
+                  transition: "{{ on_off_transition }}"
+              - service: counter.reset
+                target:
+                  entity_id:
+                    - "{{ button_2_scene_helper }}"
+                    - "{{ button_3_scene_helper }}"
+
+      - conditions:
+          - condition: trigger
+            id: button_2_short
+        sequence:
+          - service: counter.set_value
+            target:
+              entity_id: "{{ button_2_scene_helper }}"
+            data:
+              value: "{{ 0 if states(button_2_scene_helper) | int == 1 else 1 }}"
+
+      - conditions:
+          - condition: trigger
+            id: button_2_long
+        sequence:
+          - service: counter.set_value
+            target:
+              entity_id: "{{ button_2_scene_helper }}"
+            data:
+              value: "{{ 0 if states(button_2_scene_helper) | int == 2 else 2 }}"
+
+      - conditions:
+          - condition: trigger
+            id:
+              - button_3_short
+              - button_3_hold
+        sequence:
+          - choose:
+              - conditions:
+                  - condition: template
+                    value_template: "{{ states(button_3_scene_helper) | int >= state_attr(button_3_scene_helper, 'maximum') | int }}"
+                sequence:
+                  - service: counter.reset
+                    target:
+                      entity_id: "{{ button_3_scene_helper }}"
+            default:
+              - service: counter.increment
+                target:
+                  entity_id: "{{ button_3_scene_helper }}"
+
+      - conditions:
+          - condition: trigger
+            id: button_4_short
+        sequence:
+          - service: input_button.press
+            target:
+              entity_id: "{{ button_4_helper }}"
+
+      - conditions:
+          - condition: trigger
+            id: button_4_long
+        sequence:
+          - service: input_button.press
+            target:
+              entity_id: "{{ button_4_long_helper }}"
+
+mode: restart

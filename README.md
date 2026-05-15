@@ -1,6 +1,6 @@
 # Home Assistant Blueprints
 
-## IKEA Bilresa Scroll Wheel - 3 lights (Full config)
+## IKEA Bilresa Scroll Wheel - 3 lights
 
 Adapted from https://github.com/corentinnormand/ha-blueprints/blob/main/ikea_bilresa_scroll_wheel.yaml
 
@@ -63,3 +63,47 @@ Or manually import:
 ```
 https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/ikea_bilresa_scroll_wheel__colours.yaml
 ```
+
+## Philips Hue Tap Dial Switch
+
+Controls a light using the Philips Hue Tap Dial Switch via ZHA.
+
+- **Dial** — controls brightness of the target light
+- **Button 1** — turns the light on/off; resets any counters back to zero when turned off
+- **Button 2** — short/long press set a counter to 1 or 2; pressing again resets to 0
+- **Button 3** — short press / hold increments a counter; resets to 0 when maximum is reached
+- **Button 4** — short/long press each trigger a separate `input_button` helper
+
+#### Installation
+
+[![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fraw.githubusercontent.com%2Fvinascz%2Fhome-assistant-blueprints%2Fmaster%2Fphilips_hue_tap_dial.yaml)
+
+Or manually import:
+
+```
+https://raw.githubusercontent.com/vinascz/home-assistant-blueprints/master/philips_hue_tap_dial.yaml
+```
+
+#### Configuration
+
+| Parameter                       | Description                                                                           | Default |
+|---------------------------------|---------------------------------------------------------------------------------------|---------|
+| **Hue Tap Dial Switch**         | The ZHA device                                                                        | —       |
+| **Target Light**                | Light to control                                                                      | —       |
+| **Minimum Brightness**          | Dial lower bound; 0% allows fully turning off via dial                                | 0%      |
+| **Maximum Brightness**          | Dial upper bound                                                                      | 100%    |
+| **Turn On Brightness**          | Brightness when turning on via button press                                           | 5%      |
+| **Step Size**                   | Brightness change per dial tick                                                       | 1%      |
+| **Dial Transition Time**        | Transition duration for dial adjustments                                              | 0.1s    |
+| **Turn On/Off Transition Time** | Transition duration for button on/off                                                 | 0.5s    |
+| **Button 2 Scene Helper**       | `counter` tracking button 2 state (0 = none, 1 = short, 2 = long); set maximum to 2   | —       |
+| **Button 3 Scene Helper**       | `counter` tracking the active button 3 scene; set its maximum to the number of scenes | —       |
+| **Button 4 Short Press Helper** | `input_button` pressed on button 4 short press                                        | —       |
+| **Button 4 Long Press Helper**  | `input_button` pressed on button 4 long press                                         | —       |
+
+#### Helpers setup
+
+Create a `counter` helper for button 2 with maximum `2`, and a `counter` helper for button 3 with maximum equal to the
+number of scenes to cycle through.
+
+Create two `input_button` helpers for button 4 (one for short press, one for long press).
