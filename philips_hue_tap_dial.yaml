@@ -6,7 +6,7 @@ blueprint:
     - Dial: controls brightness of the target light.
     - Button 1: turns the light on/off. Resets any counters back to zero when turned off.
     - Button 2: short/long press set a counter to 1 or 2; pressing again resets to 0.
-    - Button 3: short press / hold increments a counter; resets to 0 when maximum is reached. Long press decrements (wraps to maximum at 0).
+    - Button 3: short press / hold increments a counter; resets to 0 when maximum is reached.
     - Button 4: short/long press each trigger a separate input_button helper.
   domain: automation
   input:
@@ -156,13 +156,6 @@ trigger:
     event_type: zha_event
     event_data:
       device_id: !input device_id
-      command: button_3_long_release
-    id: button_3_long
-
-  - platform: event
-    event_type: zha_event
-    event_data:
-      device_id: !input device_id
       command: button_4_short_release
     id: button_4_short
   - platform: event
@@ -280,14 +273,6 @@ action:
               - service: counter.increment
                 target:
                   entity_id: "{{ button_3_scene_helper }}"
-
-      - conditions:
-          - condition: trigger
-            id: button_3_long
-        sequence:
-          - service: counter.decrement
-            target:
-              entity_id: "{{ button_3_scene_helper }}"
 
       - conditions:
           - condition: trigger
